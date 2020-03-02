@@ -1,0 +1,60 @@
+{
+  "name": "questionapp",
+  "version": "1.0.0",
+  "description": "Question App for personality quiz",
+  "main": "src/index.js",
+  "directories": {
+    "test": "test"
+  },
+  "dependencies": {
+    "axios": "^0.18.0",
+    "bluebird": "^3.5.3",
+    "body-parser": "^1.18.3",
+    "chai": "^4.2.0",
+    "cors": "^2.8.4",
+    "cross-env": "^5.2.0",
+    "dotenv-safe": "^6.0.0",
+    "express": "^4.16.3",
+    "express-validation": "^1.0.2",
+    "helmet": "^3.13.0",
+    "http-status": "^1.2.0",
+    "joi": "^13.7.0",
+    "mocha": "^5.2.0",
+    "moment": "^2.24.0",
+    "mongoose": "^5.3.15",
+    "morgan": "^1.9.1",
+    "nyc": "^14.1.1",
+    "pm2": "^3.2.2",
+    "proxyquire": "^2.1.0",
+    "uuid": "^3.3.2",
+    "winston": "^3.1.0"
+  },
+  "devDependencies": {
+    "eslint": "^5.0.0",
+    "eslint-config-standard": "^12.0.0",
+    "eslint-plugin-import": "^2.14.0",
+    "eslint-plugin-node": "^8.0.0",
+    "eslint-plugin-promise": "^4.0.1",
+    "eslint-plugin-standard": "^4.0.0",
+    "mocha-prepare": "^0.1.0",
+    "mongodb-memory-server": "^2.7.4",
+    "nock": "^10.0.2",
+    "stream-mock": "^1.2.0",
+    "supertest": "^3.3.0"
+  },
+  "scripts": {
+    "start": "npm run start:full",
+    "test": "cross-env NODE_ENV=test LOG_LEVEL=info nyc --check-coverage --lines 70 --functions 70 --branches 70 --statements 70 --reporter=lcov --reporter=text mocha --require test/prepare.js --recursive \"test/**/*.test.js\" --check-coverage --timeout 20000",
+    "test:cov": "npm test -- --cov",
+    "test:watch": "npm test -- --cov --watch",
+    "test:debug": "cross-env NODE_ENV=test mocha --recursive --timeout 40000 --debug-brk",
+    "code:lint": "cross-env eslint src test",
+    "lint": "cross-env eslint src/* --ignore-path .gitignore --ignore-pattern internals/scripts",
+    "lint:fix": "npm run lint -- --fix",
+    "start:full": "cross-env NODE_ENV=production pm2-docker start ./src/index.js"
+  },
+  "pre-commit": [
+    "test",
+    "code:lint"
+  ]
+}
