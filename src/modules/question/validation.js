@@ -16,6 +16,11 @@ const validateSchema = (questionType) => {
       return Joi.array().items(Joi.string().valid(questionType.options)).length(1)
     case 'number_range':
       return Joi.array().items(Joi.number().min(questionType.range.from).max(questionType.range.to)).length(1)
+    case 'single_choice_picture':
+      return Joi.array().items(Joi.string().valid(questionType.options.reduce((acc, obj) => {
+        acc.push(obj.id);
+        return acc;
+      }, []))).length(1)
   }
 }
 

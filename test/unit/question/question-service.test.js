@@ -54,7 +54,28 @@ const addQuestions = async () => {
     }
   }
 
-  await Promise.all([QuestionService.create(questionOne), QuestionService.create(questionTwo), QuestionService.create(questionThree)])
+  const questionFour = {
+    questionId: 4,
+    disabled: false,
+    enabled: true,
+    question: 'Q3',
+    category: 'fact',
+    question_type: {
+      type: 'single_choice_picture',
+      options: [
+        {
+          id: 'one',
+          pictureUrl: "url"
+        },
+        {
+          id: 'two',
+          pictureUrl: "urlTwo"
+        },
+      ]
+    }
+  }
+
+  await Promise.all([QuestionService.create(questionOne), QuestionService.create(questionTwo), QuestionService.create(questionThree)], QuestionService.create(questionFour))
 }
 
 describe('QuestionService - Unit test', () => {
@@ -254,4 +275,37 @@ describe('QuestionService - Unit test', () => {
     // eslint-disable-next-line no-unused-expressions
     expect(result).to.be.an('array').that.is.not.empty
   })
+
+
+  it('Should return question with type single_choice_picture', async () => {
+
+    await addQuestions()
+    const result = await QuestionModel.find({questionId : 4})
+
+    // eslint-disable-next-line no-unused-expressions
+    expect(result).to.be.an('array').that.is.not.empty
+    expect(result[0].question_type).to.have.property('type');
+    expect(result[0].question_type.type === 'single_choice_picture').to.be.true
+
+  })
+
+  it('Should answer question with type single_choice_picture', async () => {
+
+    const answerObj = {
+      question: [{
+        questionId: 4,
+        answer: ['one']
+      }]
+    }
+
+    await QuestionService.answerQuestion(headers.userid, answerObj)
+
+    const result = await AnswerModel.find()
+
+    // eslint-disable-next-line no-unused-expressions
+    expect(result).to.be.an('array').that.is.not.empty
+
+    
+  })
 })
+

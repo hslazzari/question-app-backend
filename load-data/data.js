@@ -453,3 +453,19 @@ db.getCollection('question').insert({
     ]
   }
 });
+db.getCollection('question').insert({
+  "questionId": 27,
+  "disabled": false,
+  "enabled": true,
+  "question": "Which picture do you like?",
+  "category": "passion",
+  "question_type": {
+    "type": "single_choice_picture",
+    "options": [
+      {
+        id: "spring",
+        pictureUrl: "url"
+      }
+    ]
+  }
+});
